@@ -21,6 +21,7 @@ class Game {
 
     this.bushuDict = this.makeBushuDict();
     this.setSelectBox();
+    this.timer = new Timer(this.timeObject);
     this.initialize();
 
     this.selectBox.onchange = this.initialize.bind(this);
@@ -33,8 +34,6 @@ class Game {
     this.giveUpButton.disabled = true;
 
     this.isInPlay = false;
-
-    this.timer = new Timer(this.timeObject);
   }
 
   makeBushuDict() {
@@ -82,7 +81,8 @@ class Game {
     }
 
     this.answerCountObject.innerText = "0";
-    this.timeObject.innerText = "00:00:000";
+    this.timer.stop();
+    this.timer.reset();
     this.isInPlay = false;
     this.startButton.disabled = false;
     this.form.submit.disabled = true;
@@ -104,15 +104,26 @@ class Game {
     const bushu = this.getNowBushu();
     const number = this.bushuDict[bushu].length;
     for (let i = 0; i < number; i++) {
-      if (this.bushuDict[bushu][i] === answeredKanji) {
-        if (this.answerField.children[i].innerText === answeredKanji) return;
-        // 正解の漢字を表示する
-        this.answerField.children[i].innerText = answeredKanji;
-        this.answerField.children[i].scrollIntoView({
-          behavior: "smooth"
-        });
-        this.form.text.value = "";
-        this.answerCountObject.innerText = Number(this.answerCountObject.innerText) + 1;
+      if (this.bushuDict[bushu][i] !== answeredKanji) continue;
+      if (this.answerField.children[i].innerText === answeredKanji) return;
+      // 正解の漢字を表示する
+      this.answerField.children[i].innerText = answeredKanji;
+      this.answerField.children[i].scrollIntoView({
+        behavior: "smooth"
+      });
+      this.form.text.value = "";
+
+      const preCount = Number(this.answerCountObject.innerText);
+      const nowCount = preCount + 1;
+      this.answerCountObject.innerText = nowCount;
+
+      // 全問正解
+      if (nowCount === number) {
+        this.timer.stop();
+        this.isInPlay = false;
+        this.startButton.disabled = false;
+        this.form.submit.disabled = true;
+        this.giveUpButton.disabled = true;
       }
     }
   }
@@ -123,6 +134,7 @@ class Game {
     this.startButton.disabled = true;
     this.form.submit.disabled = false;
     this.giveUpButton.disabled = false;
+    this.answerCountObject.innerText = "0";
 
     // すべて空欄にする
     for (let item of this.answerField.children) {
@@ -162,17 +174,20 @@ class Timer {
   }
 
   countUp() {
+    if (!this.isActive) return;
     const nowTime = new Date(Date.now() - this.startTime);
     const min = String(nowTime.getMinutes()).padStart(2, 0);
     const sec = String(nowTime.getSeconds()).padStart(2, 0);
     const ms = String(nowTime.getMilliseconds()).padStart(3, 0);
     this.element.innerText = `${min}:${sec}.${ms}`;
-    if (this.isActive) {
-      setTimeout(this.countUp.bind(this), 10);
-    }
+    setTimeout(this.countUp.bind(this), 10);
   }
 
   stop() {
     this.isActive = false;
+  }
+
+  reset() {
+    this.element.innerText = "00:00:000";
   }
 }

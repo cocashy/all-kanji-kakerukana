@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>常用漢字全部書けるかな？ゲーム</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+  <h2>
+    部首が「<select id="select-box"></select>」の常用漢字
+    <span id="question-number">2136</span>
+    個書けるかな？
+  </h2>
+  <div>
+    <form id="form">
+      <input name="text">
+      <input type="submit" value="submit" name="submit"></input>
+    </form>
+    <sapn id="time">00:00:000</sapn>
+    <button id="start">start</button>
+    <button id="give-up">give up</button>
+    <span id="answer-count">0</span>個
+  </div>
+  <ul id="answer-field"></ul>
+  <script src="dict.js"></script>
+  <script src="main.js"></script>
+</body>
+
+</html>

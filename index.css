@@ -1,0 +1,36 @@
+body {
+  text-align: center;
+}
+
+select {
+  font-size: x-large;
+}
+
+form {
+  display: inline;
+}
+
+div {
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: auto;
+  border: 0.2rem solid gray;
+  padding: 0;
+  width: 80vw;
+  max-height: 75vh;
+  overflow-y: scroll;
+}
+
+li {
+  display: inline-block;
+  font-size: large;
+  padding: 0.2rem;
+  border: 0.2rem solid silver;
+  margin: 0.2rem;;
+}
